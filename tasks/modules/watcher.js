@@ -19,7 +19,7 @@ function createWatcher(watchPaths, callback) {
         });
     }
     function add(path, eventName, stats) {
-        if (_path.extname(path) !== ".ts") {
+        if (_path.extname(path) !== ".ts" || _path.extname(path) !== ".tsx") {
             return;
         }
         path = util.normalizePath(path);
