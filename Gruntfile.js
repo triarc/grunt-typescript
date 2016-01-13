@@ -137,6 +137,25 @@ module.exports = function(grunt){
                     removeComments: false
                 }
             },
+            "jsx preserve": {
+                src: "test/fixtures/jsxpreserve.tsx",
+                options: {
+                    jsx: "preserve"
+                }
+            },
+            "jsx react": {
+                src: "test/fixtures/jsxreact.tsx",
+                options: {
+                    jsx: "react"
+                }
+            },
+            "async": {
+                src: "test/fixtures/async.ts",
+                options: {
+                    target: "ES6",
+                    experimentalAsyncFunctions: true
+                }
+            },
             "references": {
                 src: "test/fixtures/ref.ts",
                 options: {
@@ -214,6 +233,7 @@ module.exports = function(grunt){
         clean: {
             test: [
                 "test/fixtures/**/*.js",
+                "test/fixtures/**/*.jsx",
                 "test/fixtures/**/*.js.map",
                 "test/fixtures/**/*.d.ts",
                 "test/temp/**/*.*",
@@ -333,6 +353,15 @@ module.exports = function(grunt){
         }).then(function(){
             return execTsc("Comment false", "test/fixtures/comments.ts --out test/expected/comments_false.js"); //default
         }).then(function(){
+            return execTsc("Preserve Jsx", "test/fixtures/jsxpreserve.tsx --jsx preserve");
+        }).then(function(){
+            grunt.file.copy("test/fixtures/jsxpreserve.jsx", "test/expected/jsxpreserve.jsx");
+            return execTsc("React Jsx", "test/fixtures/jsxreact.tsx --jsx react");
+        }).then(function(){
+            grunt.file.copy("test/fixtures/jsxreact.js", "test/expected/jsxreact.js");
+            return execTsc("Async", "test/fixtures/async.ts --experimentalAsyncFunctions -t ES6");
+        }).then(function(){
+            grunt.file.copy("test/fixtures/async.js", "test/expected/async.js");
             done(true);
         }).catch(function(){
             done(false);
